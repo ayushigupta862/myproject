@@ -1,0 +1,331 @@
+create table Equity(
+equity_id int  IDENTITY(1,1) primary key,
+Security_Name varchar(30),
+ Security_Description	varchar(30),
+ Has_Position bit,
+ Is_Active bit,
+ Security_Lot_Size int,
+ BBG_Unique_Name varchar(30) unique,
+ CUSIP varchar(30) unique,
+ ISIN varchar(30) unique,
+ SEDOL varchar(30) unique,
+ Bloomberg_Ticker varchar(30) unique,
+ Bloomberg_Unique_ID varchar(30) unique,
+ BBG_Global_ID varchar(30) unique,
+ Ticker_and_Exchange varchar(30) unique,
+ Is_ADR_Flag bit,
+ ADR_Underlying_Ticker varchar(30),
+ ADR_Underlying_Currency varchar(30),
+ Shares_Per_ADR decimal(15,10),
+ IPO_Date date,
+ Pricing_Currency varchar(30),
+ Settle_Days int,
+ Total_Shares_Outstanding decimal(15,10),
+ Voting_Rights_Per_Share decimal(15,10),
+ Average_Volume_20D decimal(15,10),
+ Beta decimal(15,10),
+ Short_Interest decimal(15,10),
+ Return_YTD decimal(15,10),
+ Volatility_90D decimal(15,10),
+ PF_Asset_Class varchar(30),
+ PF_Country varchar(30),
+ PF_Credit_Rating varchar(30),
+ PF_Currency varchar(30),
+ PF_Instrument varchar(30),
+ PF_Liquidity_Profile varchar(30),
+ PF_Maturity date,
+ PF_NAICS_Code varchar(30),
+ PF_Region varchar(30),
+ PF_Sector varchar(30),
+ PF_Sub_Asset_Class varchar(30),
+ Open_Price decimal(15,10),
+ Close_Price decimal(15,10),
+ Volume decimal(15,10),
+ Last_Price decimal(15,10),
+ Ask_Price decimal(15,10),
+ Bid_Price decimal(15,10),
+ PE_Ratio decimal(15,10),
+ Dividend_Declared_Date date,	
+ Dividend_Ex_Date date,
+ Dividend_Record_Date date,
+ Dividend_Pay_Date date,
+ Dividend_Amount decimal(15,10),
+ Frequency decimal(15,10),
+ Dividend_Type varchar(30),
+Country_of_Issuance int foreign key references Country(c_Id),
+Exchange int foreign key references Exchange(e_Id),
+Issuer int foreign key references Issuer(i_Id),
+Issue_Currency int foreign key references Currency(c_Id),
+Trading_Currency int foreign key references Currency(c_Id),
+BBG_Industry_Sub_Group int foreign key references BloombergIndustrySubGroup(bisg_Id),
+Bloomberg_Industry_Group int foreign key references BloombergIndustryGroup(big_Id),
+Bloomberg_Sector int foreign key references BloombergIndustrySector(bis_Id),
+Country_of_Incorporation int foreign key references Country(c_Id),
+Risk_Currency int foreign key references Currency(c_Id));
+
+
+
+
+
+
+
+
+
+
+
+create table Bond(
+bond_id int  IDENTITY(1,1) primary key,
+Security_Name varchar(30),
+ Security_Description	varchar(30),
+ Asset_Type varchar(30),
+ Investment_Type varchar(30),
+ Trading_Factor decimal,
+ Pricing_Factor decimal,
+ ISIN varchar(30) unique,
+ BBG_Ticker varchar(30) unique,
+ BBG_Unique_ID varchar(30) unique,
+ CUSIP varchar(30) unique,
+ SEDOL varchar(30) unique,
+ First_Coupon_Date date,
+ Cap decimal,
+ Floor_ decimal,
+ Coupon_Frequency int,
+ Coupon decimal,
+ Coupon_Type varchar(30),
+ Spread decimal,
+ Callable_Flag bit,
+ Fix_to_Float_Flag bit,
+ Putable_Flag bit,
+ Issue_Date date,
+ Last_Reset_Date date,
+ Maturity date,
+ Call_Notification_Max_Days decimal,
+ Put_Notification_Max_Days decimal,
+ Penultimate_Coupon_Date date,
+ Reset_Frequency decimal,
+ Has_Position bit,
+ Macaulay_Duration decimal,
+ ThirtyD_Volatility decimal,
+ NinetyD_Volatility	decimal,
+ Convexity decimal,
+ Thirty_Day_Average_Volume decimal,
+ PF_Asset_Class varchar(30),
+ PF_Country varchar(30),
+ PF_Credit_Rating varchar(30),
+ PF_Currency varchar(30),
+ PF_Instrument varchar(30),
+ PF_Liquidity_Profile varchar(30),
+ PF_Maturity date,
+ PF_NAICS_Code varchar(30),
+ PF_Region varchar(30),
+ PF_Sector varchar(30),
+ PF_Sub_Asset_Class varchar(30),
+ Put_Date date,
+ Put_Price decimal,
+ Ask_Price decimal,
+ High_Price decimal,
+ Low_Price decimal,
+ Open_Price decimal,
+ Volume decimal,
+ Bid_Price decimal,
+ Last_Price decimal,
+ Call_Date date,
+ Call_Price decimal,
+ Bloomberg_Info int foreign key references BloombergDetails(bloom_id),
+ Country_of_Issuance int foreign key references Country(c_Id),
+ Issue_Currency int foreign key references Currency(c_Id),
+ Issuer int foreign key references Issuer(i_Id),
+ Risk_Currency int foreign key references Currency(c_Id)
+);
+
+
+create table BloombergDetails(
+bloom_id IDENTITY(1,1) primary key,
+big_group varchar(50),
+bisg_group varchar(50),
+sector varchar(50));
+
+
+
+
+/*create table BloombergIndustryGroup(
+big_id int  IDENTITY(1,1) primary key,
+big_group varchar(30));
+
+
+
+create table BloombergIndustrySubGroup(
+bisg_id int  IDENTITY(1,1) primary key,
+bisg_group varchar(30));
+
+
+
+create table BloombergIndustrySector(
+bis_id int  IDENTITY(1,1) primary key,
+sector varchar(30));*/
+
+
+
+create table Country(
+co_id int IDENTITY(1,1) primary key,
+co_name varchar(30) unique);
+
+
+
+create table Currency(
+cu_id int  IDENTITY(1,1) primary key,
+cu_name varchar(30) unique);
+
+
+
+create table Issuer(
+i_id int  IDENTITY(1,1) primary key,
+i_name varchar(30) unique);
+
+
+
+create table Exchange(
+e_id int IDENTITY(1,1) primary key,
+e_name varchar(30) unique
+);
+
+
+
+
+stored procedures......................................................................................
+
+////////////////////////////
+USE [Securities]
+GO
+
+/****** Object:  StoredProcedure [dbo].[insertIntoCountry]    Script Date: 2018-01-18 11:02:39 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[insertIntoCountry]  
+	-- Add the parameters for the stored procedure here
+	@countryname varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into Country values(@countryname)
+END
+
+
+GO
+///////////////////////////
+CREATE PROCEDURE [dbo].[insertIntoCurrency]  
+	-- Add the parameters for the stored procedure here
+	@currencyname varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into Currency values(@currencyname)
+END
+
+
+GO
+/////////////////////
+CREATE PROCEDURE [dbo].[insertIntoIssuer]  
+	-- Add the parameters for the stored procedure here
+	@issuername varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into Issuer values(@issuername)
+END
+
+
+GO
+///////////////
+CREATE PROCEDURE [dbo].[insertIntoExchange]  
+	-- Add the parameters for the stored procedure here
+	@exchangename varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into Exchange values(@exchangename)
+END
+
+
+GO
+///////////////
+CREATE PROCEDURE [dbo].[insertIntoBloombergDetails]  
+	-- Add the parameters for the stored procedure here
+	@groupname varchar(50)
+	@subgroupname varchar(50)
+	@sector varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	id=select bloom_id where big_group=@groupname and bisg_group=@subgroup and sector=@sector;
+	if(id<> 
+	insert into BloombergDetails values(@groupname,@subgroupname,@sector)
+END
+
+
+GO
+///////////////
+CREATE PROCEDURE [dbo].[insertIntoBloombergIndustrySubGroup]  
+	-- Add the parameters for the stored procedure here
+	@Param1 varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into BloombergIndustrySubGroup values(@Param1)
+END
+
+
+GO
+/////////////
+CREATE PROCEDURE [dbo].[insertIntoBloombergIndustryGroup]  
+	-- Add the parameters for the stored procedure here
+	@Param1 varchar(50) 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into BloombergIndustryGroup values(@Param1)
+END
+
+
+GO
+///////////////
+CREATE PROCEDURE [dbo].[insertIntoBond]  
+	-- Add the parameters for the stored procedure here
+	@Param1 varchar(50)
+	@Param2 varchar(50)
+	@Param3 varchar(50)
+	@Param4 varchar(50)
+	@Param5 decimal
+	@Param6 decimal
+	@Param7 varchar(50)
+	@Param8 varchar(50)
+	@Param9 varchar(50)
+	@Param10 varchar(50)
+	@Param11 varchar(50)
+	@Param12 
+	
+	 
+	
+AS
+BEGIN
+    -- Insert statements for procedure here
+	insert into BloombergIndustryGroup values(@Param1)
+END
+
+
+GO
+
+
